@@ -25,5 +25,7 @@ export class App {
 
     this.app.get('/users', this.userController.getAllUsers);
     this.app.get('/users/:id', this.userController.getUserById);
+    this.app.post('/users', this.userController.createUser);
+    this.app.delete('/users/:id', this.userController.deleteUser);
   }
 }
