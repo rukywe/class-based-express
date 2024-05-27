@@ -1,9 +1,22 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
+import { UserService } from '../services/UserService';
 
 let users: User[] = [];
 let nextId = 1;
+
 export class UserController {
+  private userService: UserService;
+
+  constructor() {
+    this.userService = new UserService();
+
+    this.getAllUsers = this.getAllUsers.bind(this);
+    this.getUserById = this.getUserById.bind(this);
+    this.createUser = this.createUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
+  }
+
   public getAllUsers(req: Request, res: Response): void {
     res.json(users);
   }
@@ -24,8 +37,12 @@ export class UserController {
       name: req.body.name,
       email: req.body.email
     };
-    users.push(newUser);
-    res.status(201).json(newUser);
+    if (this.userService.validateUser(newUser)) {
+      users.push(newUser);
+      res.status(201).json(newUser);
+    } else {
+      res.status(400).send('Invalid user data');
+    }
   }
 
   public deleteUser(req: Request, res: Response): void {

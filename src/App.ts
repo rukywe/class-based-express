@@ -23,9 +23,17 @@ export class App {
       res.send('Hello World!');
     });
 
-    this.app.get('/users', this.userController.getAllUsers);
-    this.app.get('/users/:id', this.userController.getUserById);
-    this.app.post('/users', this.userController.createUser);
-    this.app.delete('/users/:id', this.userController.deleteUser);
+    this.app.get('/users', (req, res) =>
+      this.userController.getAllUsers(req, res)
+    );
+    this.app.get('/users/:id', (req, res) =>
+      this.userController.getUserById(req, res)
+    );
+    this.app.post('/users', (req, res) =>
+      this.userController.createUser(req, res)
+    );
+    this.app.delete('/users/:id', (req, res) =>
+      this.userController.deleteUser(req, res)
+    );
   }
 }
